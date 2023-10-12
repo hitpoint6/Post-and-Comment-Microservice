@@ -4,7 +4,10 @@ const axios = require('axios');
 
 app.use(express.json());
 
+const events = [];
 app.post('/events', (req, res) => {
+    events.push(req.body);
+
     axios.post('http://localhost:4000/events', req.body).catch((err) => {
         console.log(err.message);
     });
@@ -18,8 +21,11 @@ app.post('/events', (req, res) => {
         console.log(err.message);
     });
 
-
     res.send({ status: 'OK' });
+})
+
+app.get('/events', (req, res) => {
+    res.send(events);
 })
 
 app.listen(4005, () => {
