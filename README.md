@@ -1,23 +1,28 @@
 ### Post and Comment Microservice
 
-An app that allows to post posts, add comments to the posts, add moderation to the comments. The monolith version could be very simple to implment. This microservice version is more complicated with following services:
+This is the microservice version of what would be a very simple post posts and comments app if built in a monolith way.
 
-    - Post Service: creates a post
-    - Comment Service: creates or updated a comment
-    - Query Service: stores created and updated posts and comments for frontend query
-    - Event Bus: receives events and send to all services. Implemented in express for education purpose
-    - Moderation Service: updates the status of created event
+## Services:
 
-Each service has its own persistent storage. It is stored in memory here for simplification.
+    - Post Service: Create a post
+    - Comment Service: Create or update a comment for a post
+    - Query Service: Read all the posts and their comments
+    - Moderation Service: Update the status of a comment: pending, rejected, approved
 
-Flow for comment moderation:
+Each service has its own persistent storage in memory for simplification.
 
-    - Comment Service creates a new comment with status pending moderation and sends to the bus
-    - Query Service and Moderation Service receives the new comment. Query service serves to the frontend.
-    - Moderation Service updates the status and sends to the bus. The comment service receives the event and sends back to the bus.
-    - The Query Service receives the updated comment and serves to the frontend.
+Event Bus receives events and send to all services, each service can then choose their intersted events to process. The Event Bus is implemented in express for learning purpose.
 
-Stack:
+`npm start` to start services.
+
+## Flow for comment moderation:
+
+    - Comment Service creates a new comment with status pending moderation and sends to the Event Bus
+    - Query Service receives the comment and serves to fontend as pending moderation.
+    - Moderation Service updates the status according to a critieria like: Does the comment contains the word "orange". Then it sends the CommentModerated Event to the event bus. The comment service receives the event, update the comment status, then sends CommentUpdated event back to the bus.
+    - The Query Service receives the CommentUpdated event, updates its data and serves to the frontend.
+
+## Stack:
 
     - Express
     - React
