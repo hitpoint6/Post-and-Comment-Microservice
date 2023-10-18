@@ -1,6 +1,7 @@
 ### Post and Comment Microservice
 
-This is the microservice version of what would be a very simple post posts and comments app if built in a monolith way.
+This is the microservice version of what would be a very simple posts and comments app if built in a monolith way. The microservice architecture allow each service to scale independently and work properly during temporary down time of other services.
+
 
 ## Services:
 
